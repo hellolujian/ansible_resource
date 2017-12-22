@@ -1,0 +1,19 @@
+---
+- name: Install maven
+  hosts: 192.168.174.130
+  tasks:
+     - name: Install maven via zip
+       copy: src=/usr/local/install_package/apache-maven-3.5.2-bin.zip dest=/usr/local/install_packages
+       when: ansible_os_family == "Debian"
+     - name: Unzip apache-maven-3.5.2-bin.zip
+#       shell: chdir=/usr/local/install_packages unzip apache-maven-3.5.2-bin.zip -d ..
+       unarchive:
+         src: /usr/local/install_packages/apache-maven-3.5.2-bin.zip
+         dest: /usr/local
+         copy: no
+     - name: export
+       shell: /bin/echo {{ item }} >> /etc/profile && . /etc/profile
+       with_items: 
+         - export PATH=/usr/local/apache-maven-3.5.2/bin:$PATH
+
+     
