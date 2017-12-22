@@ -17,6 +17,7 @@
          dest: /usr/local
          copy: no
      - name: export jdk enviroment
+#source /etc/profile不知道为什么不起作用，需要连接到被管理机上敲一下此命令
        shell: /bin/echo {{ item }} >> /etc/profile && . /etc/profile
        with_items:
          - export JAVA_HOME=/usr/local/jdk1.8.0_152
