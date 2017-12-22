@@ -1,0 +1,9 @@
+---
+- hosts: test-servers
+  vars:
+    http_port: 80
+    max_clients: 200
+  remote_user: root
+  tasks:
+  - name: ensure apache is running
+    shell: systemctl start apache2

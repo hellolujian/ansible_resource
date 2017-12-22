@@ -1,0 +1,35 @@
+---
+- name: Install jdk1.8
+  hosts: 192.168.174.130
+  remote_user: root
+  tasks:
+     - name: Create a directory if it doesn't exit
+       file:
+         path: /usr/local/install_packages
+         state: directory
+     - name: Copy jdk1.8
+       copy: 
+         src: /home/lujian/下载/java/jdk-8u152-linux-x64.tar.gz 
+         dest: /usr/local/install_packages
+     - name: Unarchive jdk1.8
+       unarchive:
+         src: /usr/local/install_packages/jdk-8u152-linux-x64.tar.gz
+         dest: /usr/local
+         copy: no
+     - name: export jdk enviroment
+       shell: /bin/echo {{ item }} >> /etc/profile && . /etc/profile
+       with_items:
+         - export JAVA_HOME=/usr/local/jdk1.8.0_152
+         - export JRE_HOME=/usr/local/jdk1.8.0_152/jre
+         - export CLASSPATH=.:\$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:\$JRE_HOME/lib:\$CLASSPATH
+         - export PATH=\$JAVA_HOME/bin:\$PATH
+       notify: 
+         - source profile
+  handlers: 
+     - name: source profile
+       shell: . /etc/profile
+
+
+
+
+     

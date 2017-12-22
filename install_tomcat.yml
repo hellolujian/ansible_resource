@@ -1,0 +1,28 @@
+---
+- name: Install tomcat
+  hosts: 192.168.174.130
+  remote_user: root
+  tasks:
+     - name: Create a directory if it doesn't exit
+       file:
+         path: /usr/local/install_packages
+         state: directory
+     - name: Copy tomcat
+       copy: 
+         src: /home/lujian/下载/tomcat/apache-tomcat-8.5.24.tar.gz
+         dest: /usr/local/install_packages
+       when: ansible_os_family == "Debian"
+     - name: Unarchive tomcat
+       unarchive:
+         src: /usr/local/install_packages/apache-tomcat-8.5.24.tar.gz
+         dest: /usr/local
+         copy: no
+#     - name: "给sh脚本增加权限"
+#       shell: 'find /usr/local/apache-tomcat-8.5.24/bin/ -name "*.sh" | xargs chmod +x'
+     - name: Start tomcat
+       shell: chdir=/usr/local/apache-tomcat-8.5.24/bin ./startup.sh
+#       shell: cd /usr/local/apache-tomcat-8.5.24/bin&&./startup.sh
+#       shell: nohup /usr/local/apache-tomcat-8.5.24/bin/startup.sh &
+
+
+     
